@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Banner from '../../../../components/Banner';
 import PhotoForm from '../../components/PhotoForm';
+import './style.scss';
 
 AddEditPage.propTypes = {};
 

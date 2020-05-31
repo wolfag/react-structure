@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import Images from '../../../../constants/images';
+import { PHOTO_CATEGORY_OPTIONS } from '../../../../constants/global';
 
 PhotoForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -17,6 +19,15 @@ function PhotoForm(props) {
       <FormGroup>
         <Label for='titleId'>Title</Label>
         <Input name='title' id='titleId' placeholder='Eg: Wow nature...' />
+      </FormGroup>
+      <FormGroup>
+        <Label for='categoryId'>Category</Label>
+        <Select
+          id='categoryId'
+          name='categoryId'
+          placeholder="What's your photo category?"
+          options={PHOTO_CATEGORY_OPTIONS}
+        />
       </FormGroup>
       <FormGroup>
         <Label for='categoryId'>Photo</Label>

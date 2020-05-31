@@ -4,6 +4,8 @@ import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
 
+import './App.scss';
+
 const Photo = React.lazy(() => import('./features/Photo'));
 
 function App(props) {
