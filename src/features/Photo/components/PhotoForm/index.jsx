@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Select from 'react-select';
-import { FormGroup, Label, Input, Button } from 'reactstrap';
-import Images from 'constants/images';
 import { PHOTO_CATEGORY_OPTIONS } from 'constants/global';
-import { Formik, Form, FastField } from 'formik';
+import RandomPhotoField from 'custom-fields/RandomPhoto/RandomPhotoField';
+import { FastField, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Button, FormGroup } from 'reactstrap';
 import InputField from '../../../../custom-fields/InputField';
 import SelectField from '../../../../custom-fields/SelectField';
 
@@ -17,9 +16,11 @@ PhotoForm.defaultProps = {
 
 function PhotoForm(props) {
   const { onSubmit } = props;
-  const initValues = { title: '', category: null };
+  const initValues = { title: '', category: null, photo: null };
   return (
-    <Formik initialValues={initValues}>
+    <Formik
+      initialValues={initValues}
+      onSubmit={(values) => console.log({ values })}>
       {(formikProps) => {
         const { values, errors, touched } = formikProps;
         return (
@@ -38,24 +39,14 @@ function PhotoForm(props) {
               options={PHOTO_CATEGORY_OPTIONS}
             />
 
+            <FastField
+              name='photo'
+              component={RandomPhotoField}
+              label='Photo'
+            />
+
             <FormGroup>
-              <Label for='categoryId'>Photo</Label>
-              <div>
-                <Button type='button' outline color='primary'>
-                  Random a photo
-                </Button>
-              </div>
-              <div>
-                <img
-                  width='200px'
-                  height='200px'
-                  src={Images.COLORFUL_BG}
-                  alt='colorful background'
-                />
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Button onClick={onSubmit} color='primary'>
+              <Button type='submit' onClick={onSubmit} color='primary'>
                 Add to album
               </Button>
             </FormGroup>
