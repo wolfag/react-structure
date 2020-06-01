@@ -7,6 +7,7 @@ RandomPhoto.propTypes = {
   imageUrl: PropTypes.string,
   onImageUrlChange: PropTypes.func,
   onRandomButtonBlur: PropTypes.func,
+  className: PropTypes.string,
 };
 
 RandomPhoto.defaultProps = {
@@ -14,6 +15,7 @@ RandomPhoto.defaultProps = {
   imageUrl: '',
   onImageUrlChange: null,
   onRandomButtonBlur: null,
+  className: '',
 };
 
 const getRandomImageUrl = () => {
@@ -22,7 +24,13 @@ const getRandomImageUrl = () => {
 };
 
 function RandomPhoto(props) {
-  const { name, imageUrl, onImageUrlChange, onRandomButtonBlur } = props;
+  const {
+    name,
+    imageUrl,
+    onImageUrlChange,
+    onRandomButtonBlur,
+    className,
+  } = props;
 
   const handleClick = async () => {
     if (onImageUrlChange) {
@@ -32,7 +40,7 @@ function RandomPhoto(props) {
   };
 
   return (
-    <div className='random-photo'>
+    <div className={`random-photo ${className}`}>
       <div className='random-photo__button'>
         <Button
           outline
