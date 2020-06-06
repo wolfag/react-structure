@@ -3,7 +3,7 @@ import RandomPhotoField from 'custom-fields/RandomPhoto/RandomPhotoField';
 import { FastField, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, FormGroup } from 'reactstrap';
+import { Button, FormGroup, Spinner } from 'reactstrap';
 import InputField from 'custom-fields/InputField';
 import SelectField from 'custom-fields/SelectField';
 import * as yup from 'yup';
@@ -32,9 +32,9 @@ function PhotoForm(props) {
     <Formik
       validationSchema={validationSchema}
       initialValues={initValues}
-      onSubmit={(values) => console.log({ values })}>
+      onSubmit={onSubmit}>
       {(formikProps) => {
-        const { values, errors, touched } = formikProps;
+        const { values, errors, touched, isSubmitting } = formikProps;
         console.log({ values, errors, touched });
         return (
           <Form>
@@ -59,7 +59,8 @@ function PhotoForm(props) {
             />
 
             <FormGroup>
-              <Button type='submit' onClick={onSubmit} color='primary'>
+              <Button type='submit' color='primary'>
+                {isSubmitting && <Spinner size='sm' />}
                 Add to album
               </Button>
             </FormGroup>
