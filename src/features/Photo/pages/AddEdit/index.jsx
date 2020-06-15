@@ -2,22 +2,34 @@ import Banner from 'components/Banner';
 import React from 'react';
 import PhotoForm from 'features/Photo/components/PhotoForm';
 import './style.scss';
-import { useDispatch } from 'react-redux';
-import { addPhoto } from 'features/Photo/photoSlice';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPhoto, updatePhoto } from 'features/Photo/photoSlice';
+import { useHistory, useParams } from 'react-router-dom';
 
 AddEditPage.propTypes = {};
 
 function AddEditPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { photoId } = useParams();
+  const photo = useSelector((state) =>
+    state.photos.find((x) => x.id === +photoId)
+  );
+
+  const initialValues = photoId
+    ? photo
+    : { title: '', categoryId: null, photo: '' };
 
   const handleSubmit = (value) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const action = addPhoto(value);
+        let action;
+        if (photoId) {
+          action = updatePhoto(value);
+        } else {
+          action = addPhoto(value);
+        }
         dispatch(action);
-
         history.push('/photos');
 
         resolve(true);
@@ -29,7 +41,11 @@ function AddEditPage(props) {
     <div className='photo-edit'>
       <Banner title='Pick your amazing photo' />
       <div className='photo-edit__form'>
-        <PhotoForm onSubmit={handleSubmit} />
+        <PhotoForm
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          isEdit={!!photoId}
+        />
       </div>
     </div>
   );
