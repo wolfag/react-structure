@@ -5,6 +5,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
+import productApi from 'api/productApi';
 
 const Photo = React.lazy(() => import('./features/Photo'));
 
@@ -18,6 +19,22 @@ firebase.initializeApp(config);
 function App(props) {
   const [productList, setProductList] = useState([]);
   const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const fetchProductList = async () => {
+      try {
+        const params = {
+          _page: 1,
+          _limit: 10,
+        };
+        const response = await productApi.getAll(params);
+        setProductList(response.data);
+      } catch (error) {
+        console.log('Failed to fetch product list', error);
+      }
+    };
+    fetchProductList();
+  }, []);
 
   // firebase auth changed
   useEffect(() => {
