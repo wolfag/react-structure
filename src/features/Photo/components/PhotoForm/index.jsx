@@ -34,7 +34,6 @@ function PhotoForm(props) {
       onSubmit={onSubmit}>
       {(formikProps) => {
         const { values, errors, touched, isSubmitting } = formikProps;
-        console.log({ values, errors, touched });
         return (
           <Form>
             <FastField
