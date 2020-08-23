@@ -1,11 +1,14 @@
+import { unwrapResult } from '@reduxjs/toolkit';
+import productApi from 'api/productApi';
+import { getMe } from 'app/userSlice';
 import SignIn from 'features/Auth/pages/SignIn';
 import firebase from 'firebase';
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
-import productApi from 'api/productApi';
 
 const Photo = React.lazy(() => import('./features/Photo'));
 
@@ -19,6 +22,7 @@ firebase.initializeApp(config);
 function App(props) {
   const [productList, setProductList] = useState([]);
   const [user, setUser] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProductList = async () => {
@@ -40,12 +44,23 @@ function App(props) {
   useEffect(() => {
     const unregisterAuthObserver = firebase
       .auth()
-      .onAuthStateChanged((user) => {
+      .onAuthStateChanged(async (user) => {
         console.log({ user });
         setUser(user);
+        try {
+          const action = getMe();
+          const actionResult = await dispatch(action);
+
+          // use unwrapResult to catch error
+          const currentUser = unwrapResult(actionResult);
+          console.log({ currentUser });
+        } catch (error) {
+          console.log({ error });
+        }
       });
+
     return () => unregisterAuthObserver();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className='photo-app'>
